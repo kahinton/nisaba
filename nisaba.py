@@ -74,9 +74,9 @@ def folder(**kwargs):
                 if kwargs['filetype'] == '.*' and '.' in q[-4:]:
                     filepath = os.path.join(kwargs['rootfolder'], q)
                     foundfiles += 1
-                    if kwargs['alter'] is None and kwargs['searchphrase'] is not None:
+                    if kwargs['alter'] is None and kwargs['searchphrase']:
                         searchFile(filepath, **kwargs)
-                    elif kwargs['alter'] is not None and kwargs['searchphrase'] is None:
+                    elif kwargs['alter'] and kwargs['searchphrase'] is None:
                         alterFile(filepath, **kwargs)
                     else:
                         print('\nPlease specify either alter or searchphrases')
@@ -84,9 +84,9 @@ def folder(**kwargs):
                 elif '.{0}'.format(q.split('.')[-1]) in str(kwargs['filetype']).split(','):
                     filepath = os.path.join(kwargs['rootfolder'], q)
                     foundfiles += 1
-                    if kwargs['alter'] is None and kwargs['searchphrase'] is not None:
+                    if kwargs['alter'] is None and kwargs['searchphrase']:
                         searchFile(filepath, **kwargs)
-                    elif kwargs['alter'] is not None and kwargs['searchphrase'] is None:
+                    elif kwargs['alter'] and kwargs['searchphrase'] is None:
                         alterFile(filepath, **kwargs)
                     else:
                         print('\nPlease specify either alter or searchphrases')
@@ -96,6 +96,7 @@ def folder(**kwargs):
             else:
                 if kwargs['verbose']:
                     print('\n{0} files searched'.format(foundfiles))
+
         if kwargs['recursive']:
             foundfiles = 0
             for root, dirs, files in os.walk(kwargs['rootfolder'], topdown=False):
@@ -122,11 +123,12 @@ def folder(**kwargs):
                             
             if foundfiles == 0:
                 print('\nNo files found with the file extension(s) {0}'.format(str(kwargs['filetype'])))
+
             else:
                 if kwargs['verbose']:
                     print('\n{0} files searched'.format(foundfiles))
-    except Exception,e:
-        print('\nCodeCrawler encountered the following error: {0}'.format(e))
+    except Exception as e:
+        print('\nNisaba encountered the following error: {0}'.format(e))
 
 
 @init.command()
@@ -138,10 +140,12 @@ def folder(**kwargs):
 def file(**kwargs):
     """If you need Nisaba to search through a single file, you should use this option.
     Simply provide the filepath, and your required options, and Nisaba will do the rest!"""
-    if kwargs['alter'] is None and kwargs['searchphrase'] is not None:
+    if kwargs['alter'] is None and kwargs['searchphrase']:
         searchFile(kwargs['file'], **kwargs)
-    elif kwargs['alter'] is not None and kwargs['searchphrase'] is None:
+
+    elif kwargs['alter'] and kwargs['searchphrase'] is None:
         alterFile(kwargs['file'], **kwargs)
+
     else:
         print('\nPlease specify either alter or searchphrases')
     print('\nFile search is finished')
@@ -158,8 +162,9 @@ def jfile(**kwargs):
     functions. Using the options available to this function, you should be able to
     return very specific information from your file."""
     
-    if kwargs['searchkeys'] is not None:
+    if kwargs['searchkeys']:
         jSearchFile(kwargs['file'], **kwargs)
+
     else:
         print('\nPlease specify desired searchkeys')
     print('\nFile search is finished')
@@ -185,7 +190,7 @@ def jfolder(**kwargs):
                 if kwargs['filetype'] == '.*' and '.' in q[-4:]:
                     filepath = os.path.join(kwargs['rootfolder'], q)
                     foundfiles += 1
-                    if kwargs['searchkeys'] is not None:
+                    if kwargs['searchkeys']:
                         jSearchFile(filepath, **kwargs)
                     else:
                         print('\nPlease specify desired searchkeys')
@@ -193,7 +198,7 @@ def jfolder(**kwargs):
                 elif '.{0}'.format(q.split('.')[-1]) in str(kwargs['filetype']).split(','):
                     filepath = os.path.join(kwargs['rootfolder'], q)
                     foundfiles += 1
-                    if kwargs['searchkeys'] is not None:
+                    if kwargs['searchkeys']:
                         jSearchFile(filepath, **kwargs)
                     else:
                         print('\nPlease specify desired searchkeys')
@@ -210,7 +215,7 @@ def jfolder(**kwargs):
                     if kwargs['filetype'] == '.*' and '.' in name[-4:]:
                         filepath = os.path.join(root, name)
                         foundfiles += 1
-                        if kwargs['searchkeys'] is not None:
+                        if kwargs['searchkeys']:
                             jSearchFile(filepath, **kwargs)
                         else:
                             print('\nPlease specify desired searchkeys')
@@ -218,7 +223,7 @@ def jfolder(**kwargs):
                     elif '.{0}'.format(name.split('.')[-1]) in str(kwargs['filetype']).split(','):
                         filepath = os.path.join(root, name)
                         foundfiles += 1
-                        if kwargs['searchkeys'] is not None:
+                        if kwargs['searchkeys']:
                             jSearchFile(filepath,**kwargs)
                         else:
                             print('\nPlease specify desired searchkeys')
@@ -228,7 +233,7 @@ def jfolder(**kwargs):
             else:
                 if kwargs['verbose']:
                     print('\n{0} files searched'.format(foundfiles))
-    except Exception, e:
+    except Exception as e:
         print('\nCodeCrawler encountered the following error: {0}'.format(e))
             
 if __name__ == '__main__':
